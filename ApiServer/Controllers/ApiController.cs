@@ -1,5 +1,6 @@
 ﻿using ApiScheme.Scheme;
 using ApiScheme.Server;
+using ApiServer.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,41 @@ namespace ApiServer.Controllers
             ApiScheme.TestApiException e;
             throw new ApiScheme.TestApiException("Exception thrown because requested.");
             //throw new Exception("Exception thrown because requested.");
+        }
+
+
+
+        // ----- Production -----
+
+        public GetCharactersOut GetCharacters(GetCharactersIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var characters = new List<CharacterInfo>();
+                var user = db.Users.FirstOrDefault(u => u.UserId == i.userId);
+                if (user != null)
+                    characters = user.Characters.Select(c => {
+                        return new CharacterInfo() { userId = c.UserId, name = c.Name };
+                    }).ToList();
+                return new GetCharactersOut() { characters = characters };
+            }
+        }
+
+        public CreateCharacterOut CreateCharacter(CreateCharacterIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var user = db.Users.FirstOrDefault(u => u.UserId == i.userId);
+                if (user == null)
+                {
+                    user = new User() { UserId = i.userId };
+                    db.Users.Add(user);
+                }
+                var character = new Character() { UserId = user.UserId, Name = i.name };
+                db.Characters.Add(character);
+                db.SaveChanges();
+            }
+            return new CreateCharacterOut();
         }
 	}
 }
