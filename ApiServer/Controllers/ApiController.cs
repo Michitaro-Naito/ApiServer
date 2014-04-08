@@ -130,6 +130,9 @@ namespace ApiServer.Controllers
                     user = new User() { UserId = i.userId };
                     db.Users.Add(user);
                 }
+                if (user.Characters.Count >= 3)
+                    throw new ApiMaxReachedException("Max characters exceeded.");
+
                 var character = new Character() { UserId = user.UserId, Name = i.name };
                 db.Characters.Add(character);
                 try
@@ -138,7 +141,7 @@ namespace ApiServer.Controllers
                 }
                 catch (DbUpdateException e)
                 {
-                    throw new ApiAddException("Failed to insert a Character.");
+                    throw new ApiNotUniqueException("Failed to insert a Character.");
                 }
             }
             return new CreateCharacterOut();
