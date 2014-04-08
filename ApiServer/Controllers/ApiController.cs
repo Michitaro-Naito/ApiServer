@@ -163,5 +163,20 @@ namespace ApiServer.Controllers
             }
             return new AddPlayLogOut();
         }
+
+        public GetPlayLogsOut GetPlayLogs(GetPlayLogsIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var logs = db.PlayLogs
+                    .OrderByDescending(l => l.PlayLogId)
+                    .Skip(50 * i.page)
+                    .Take(50)
+                    .ToList()
+                    .Select(l => new PlayLogInfo() { id = l.PlayLogId, created = l.Created, roomName = l.RoomName, fileName = l.FileName })
+                    .ToList();
+                return new GetPlayLogsOut() { playLogs = logs };
+            }
+        }
 	}
 }
