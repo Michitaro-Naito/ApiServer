@@ -178,5 +178,17 @@ namespace ApiServer.Controllers
                 return new GetPlayLogsOut() { playLogs = logs };
             }
         }
+
+        public GetPlayLogByIdOut GetPlayLogById(GetPlayLogByIdIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                PlayLogInfo info = null;
+                var log = db.PlayLogs.Find(i.id);
+                if (log != null)
+                    info = new PlayLogInfo() { id = log.PlayLogId, created = log.Created, roomName = log.RoomName, fileName = log.FileName };
+                return new GetPlayLogByIdOut() { playLog = info };
+            }
+        }
 	}
 }
