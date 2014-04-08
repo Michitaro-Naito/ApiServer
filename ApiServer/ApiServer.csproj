@@ -198,10 +198,19 @@
     <Compile Include="Migrations\201403280637423_CharacterName.Designer.cs">
       <DependentUpon>201403280637423_CharacterName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404082115160_PlayLog.cs" />
+    <Compile Include="Migrations\201404082115160_PlayLog.Designer.cs">
+      <DependentUpon>201404082115160_PlayLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404082120565_PlayLogCreated.cs" />
+    <Compile Include="Migrations\201404082120565_PlayLogCreated.Designer.cs">
+      <DependentUpon>201404082120565_PlayLogCreated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\PlayLog.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -268,6 +277,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403280637423_CharacterName.resx">
       <DependentUpon>201403280637423_CharacterName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404082115160_PlayLog.resx">
+      <DependentUpon>201404082115160_PlayLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404082120565_PlayLogCreated.resx">
+      <DependentUpon>201404082120565_PlayLogCreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

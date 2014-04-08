@@ -146,5 +146,22 @@ namespace ApiServer.Controllers
             }
             return new CreateCharacterOut();
         }
+
+        public AddPlayLogOut AddPlayLog(AddPlayLogIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                try
+                {
+                    db.PlayLogs.Add(new PlayLog() { RoomName = i.roomName, FileName = i.fileName });
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    throw new ApiNotUniqueException("Failed to insert a PlayLog");
+                }
+            }
+            return new AddPlayLogOut();
+        }
 	}
 }
