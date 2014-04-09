@@ -153,7 +153,7 @@ namespace ApiServer.Controllers
             {
                 try
                 {
-                    db.PlayLogs.Add(new PlayLog() { RoomName = i.roomName, FileName = i.fileName });
+                    db.PlayLogs.Add(PlayLog.FromInfo(i.log));
                     db.SaveChanges();
                 }
                 catch
@@ -173,7 +173,7 @@ namespace ApiServer.Controllers
                     .Skip(50 * i.page)
                     .Take(50)
                     .ToList()
-                    .Select(l => new PlayLogInfo() { id = l.PlayLogId, created = l.Created, roomName = l.RoomName, fileName = l.FileName })
+                    .Select(l => l.ToInfo() /*new PlayLogInfo() { id = l.PlayLogId, created = l.Created, roomName = l.RoomName, fileName = l.FileName }*/)
                     .ToList();
                 return new GetPlayLogsOut() { playLogs = logs };
             }
@@ -186,7 +186,7 @@ namespace ApiServer.Controllers
                 PlayLogInfo info = null;
                 var log = db.PlayLogs.Find(i.id);
                 if (log != null)
-                    info = new PlayLogInfo() { id = log.PlayLogId, created = log.Created, roomName = log.RoomName, fileName = log.FileName };
+                    info = log.ToInfo() /*new PlayLogInfo() { id = log.PlayLogId, created = log.Created, roomName = log.RoomName, fileName = log.FileName };*/;
                 return new GetPlayLogByIdOut() { playLog = info };
             }
         }

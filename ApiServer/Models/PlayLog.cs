@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +24,12 @@ namespace ApiServer.Models
         /// </summary>
         public DateTime Created { get; set; }
 
+        [Required]
+        public string CultureCode { get; set; }
+
+        [Required]
+        public string TimeZoneCode { get; set; }
+
         /// <summary>
         /// A RoomName like "Come to Play!", "みんなで楽しく人狼ゲーム！".
         /// </summary>
@@ -39,6 +46,32 @@ namespace ApiServer.Models
         public PlayLog()
         {
             Created = DateTime.UtcNow;
+            CultureCode = "en-US";
+            TimeZoneCode = "UTC";
+        }
+
+        public static PlayLog FromInfo(ApiScheme.Scheme.PlayLogInfo info)
+        {
+            return new PlayLog()
+            {
+                CultureCode = info.culture,
+                TimeZoneCode = info.timezone,
+                RoomName = info.roomName,
+                FileName = info.fileName
+            };
+        }
+
+        public ApiScheme.Scheme.PlayLogInfo ToInfo()
+        {
+            return new ApiScheme.Scheme.PlayLogInfo()
+            {
+                id = PlayLogId,
+                created = Created,
+                culture = CultureCode,
+                timezone = TimeZoneCode,
+                roomName = RoomName,
+                fileName = FileName
+            };
         }
     }
 }

@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201404082120565_PlayLogCreated.Designer.cs">
       <DependentUpon>201404082120565_PlayLogCreated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404090147393_PlayLog_CultureAndTimeZone.cs" />
+    <Compile Include="Migrations\201404090147393_PlayLog_CultureAndTimeZone.Designer.cs">
+      <DependentUpon>201404090147393_PlayLog_CultureAndTimeZone.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -283,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404082120565_PlayLogCreated.resx">
       <DependentUpon>201404082120565_PlayLogCreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404090147393_PlayLog_CultureAndTimeZone.resx">
+      <DependentUpon>201404090147393_PlayLog_CultureAndTimeZone.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
