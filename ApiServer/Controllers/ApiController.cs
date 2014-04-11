@@ -9,6 +9,7 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -145,6 +146,46 @@ namespace ApiServer.Controllers
                 }
             }
             return new CreateCharacterOut();
+        }
+
+        //[DebuggerStepThrough]
+        public TransactionOut Transaction(TransactionIn i)
+        {
+            var retry = false;
+            for (var n = 0; n < 1000; n++)
+            {
+                using (var db = new MyDbContext())
+                {
+                    try
+                    {
+                        i.infos.ForEach(info =>
+                        {
+                            var target = db.Characters.Single(c => c.Name == info.characterName);
+                            if(info.items != null)
+                                target.Items = target.Items.AddResult(info.items);
+                        });
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        throw new ApiOutOfRangeException(e.Message);
+                    }
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch
+                    {
+                        retry = true;
+                    }
+                }
+                if (!retry)
+                    break;
+                Thread.Sleep(10);
+            }
+            if (retry)
+                throw new ApiBusyForNowException("Max retry exceeded.");
+            return new TransactionOut();
         }
 
         public AddPlayLogOut AddPlayLog(AddPlayLogIn i)

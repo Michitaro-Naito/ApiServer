@@ -3,6 +3,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ApiScheme.Server;
 using System.Reflection;
+using System.Threading.Tasks;
+using ApiServer.Models;
+using Newtonsoft.Json;
 
 namespace ApiServer.Tests
 {
