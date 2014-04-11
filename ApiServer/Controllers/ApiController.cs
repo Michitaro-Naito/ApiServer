@@ -96,6 +96,15 @@ namespace ApiServer.Controllers
 
         // ----- Production -----
 
+        public GetBlacklistOut GetBlacklist(GetBlacklistIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var ids = db.BannedIds.OrderBy(id=>id.UserId).Skip(1 * i.page).Take(1).ToList();
+                return new GetBlacklistOut() { infos = ids.Select(id => new BannedIdInfo() { userId = id.UserId }).ToList() };
+            }
+        }
+
         /// <summary>
         /// Gets Characters of an User.
         /// </summary>
