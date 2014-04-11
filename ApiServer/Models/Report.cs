@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ApiScheme.Scheme;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -30,6 +33,22 @@ namespace ApiServer.Models
         /// Messages reported.
         /// </summary>
         public string JsonMessages { get; set; }
+
+        [NotMapped]
+        public List<MessageInfo> Messages
+        {
+            get
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<List<MessageInfo>>(JsonMessages);
+                }
+                catch
+                {
+                    return new List<MessageInfo>() { new MessageInfo() { body = JsonMessages } };
+                }
+            }
+        }
 
         public Report()
         {
