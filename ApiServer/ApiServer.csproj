@@ -218,12 +218,17 @@
     <Compile Include="Migrations\201404110519089_BannedId.Designer.cs">
       <DependentUpon>201404110519089_BannedId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404110911408_Report.cs" />
+    <Compile Include="Migrations\201404110911408_Report.Designer.cs">
+      <DependentUpon>201404110911408_Report.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BannedId.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\PlayLog.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -305,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404110519089_BannedId.resx">
       <DependentUpon>201404110519089_BannedId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404110911408_Report.resx">
+      <DependentUpon>201404110911408_Report.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

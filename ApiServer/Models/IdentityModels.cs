@@ -27,5 +27,6 @@ namespace ApiServer.Models
         public DbSet<Character> Characters { get; set; }
         public DbSet<PlayLog> PlayLogs { get; set; }
         public DbSet<BannedId> BannedIds { get; set; }
+        public DbSet<Report> Reports { get; set; }
     }
 }

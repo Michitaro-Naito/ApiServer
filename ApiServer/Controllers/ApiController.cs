@@ -100,7 +100,7 @@ namespace ApiServer.Controllers
         {
             using (var db = new MyDbContext())
             {
-                var ids = db.BannedIds.OrderBy(id=>id.UserId).Skip(1 * i.page).Take(1).ToList();
+                var ids = db.BannedIds.OrderBy(id=>id.UserId).Skip(50 * i.page).Take(50).ToList();
                 return new GetBlacklistOut() { infos = ids.Select(id => new BannedIdInfo() { userId = id.UserId }).ToList() };
             }
         }
@@ -239,6 +239,23 @@ namespace ApiServer.Controllers
                     info = log.ToInfo() /*new PlayLogInfo() { id = log.PlayLogId, created = log.Created, roomName = log.RoomName, fileName = log.FileName };*/;
                 return new GetPlayLogByIdOut() { playLog = info };
             }
+        }
+
+        public ReportMessageOut ReportMessage(ReportMessageIn i)
+        {
+            Debug.WriteLine(i);
+            using (var db = new MyDbContext())
+            {
+                var report = new Report()
+                {
+                    UserId = i.userId,
+                    Note = i.note,
+                    JsonMessages = JsonConvert.SerializeObject(i.messages)
+                };
+                db.Reports.Add(report);
+                db.SaveChanges();
+            }
+            return new ReportMessageOut();
         }
 	}
 }
