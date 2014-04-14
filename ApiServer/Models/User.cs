@@ -14,5 +14,10 @@ namespace ApiServer.Models
 
         [InverseProperty("User")]
         public virtual ICollection<Character> Characters { get; set; }
+
+        public User()
+        {
+            Characters = new List<Character>();
+        }
     }
 }

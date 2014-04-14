@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -129,7 +130,7 @@ namespace ApiServer.Controllers
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        [DebuggerStepThrough]
+        //[DebuggerStepThrough]
         public CreateCharacterOut CreateCharacter(CreateCharacterIn i)
         {
             using (var db = new MyDbContext())
@@ -145,11 +146,12 @@ namespace ApiServer.Controllers
 
                 var character = new Character() { UserId = user.UserId, Name = i.name };
                 db.Characters.Add(character);
+                db.SaveChanges();
                 try
                 {
                     db.SaveChanges();
                 }
-                catch (DbUpdateException e)
+                catch (DbEntityValidationException)
                 {
                     throw new ApiNotUniqueException("Failed to insert a Character.");
                 }

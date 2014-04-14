@@ -44,6 +44,7 @@ namespace ApiServer.Models
 
         public Character()
         {
+            JsonItems = "{}";
         }
 
         [NotMapped]
