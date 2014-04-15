@@ -130,7 +130,7 @@ namespace ApiServer.Controllers
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        //[DebuggerStepThrough]
+        [DebuggerStepThrough]
         public CreateCharacterOut CreateCharacter(CreateCharacterIn i)
         {
             using (var db = new MyDbContext())
@@ -205,15 +205,16 @@ namespace ApiServer.Controllers
             {
                 try
                 {
-                    db.PlayLogs.Add(PlayLog.FromInfo(i.log));
+                    var log = PlayLog.FromInfo(i.log);
+                    db.PlayLogs.Add(log);
                     db.SaveChanges();
+                    return new AddPlayLogOut() { id = log.PlayLogId };
                 }
                 catch
                 {
                     throw new ApiNotUniqueException("Failed to insert a PlayLog");
                 }
             }
-            return new AddPlayLogOut();
         }
 
         public GetPlayLogsOut GetPlayLogs(GetPlayLogsIn i)
