@@ -260,5 +260,38 @@ namespace ApiServer.Controllers
             }
             return new ReportMessageOut();
         }
+
+        public ReportGameServerStatusOut ReportGameServerStatus(ReportGameServerStatusIn i)
+        {
+            Debug.WriteLine(i);
+            using (var db = new MyDbContext())
+            {
+                var status = db.GameServerStatuses.FirstOrDefault(s => s.Name == i.name);
+                if (status == null)
+                {
+                    status = new GameServerStatus();
+                    db.GameServerStatuses.Add(status);
+                }
+                status.Updated = DateTime.UtcNow;
+                status.Host = i.host;
+                status.Port = i.port;
+                status.Name = i.name;
+                status.Players = i.players;
+                status.MaxPlayers = i.maxPlayers;
+                status.FramesPerInterval = i.framesPerInterval;
+                status.ReportIntervalSeconds = i.reportIntervalSeconds;
+                status.MaxElapsedSeconds = i.maxElapsedSeconds;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    throw new ApiBusyForNowException("Failed to update GameServerStatus. Maybe ApiServer is busy for now.");
+                }
+            }
+            return new ReportGameServerStatusOut();
+        }
 	}
 }

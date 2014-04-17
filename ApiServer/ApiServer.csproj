@@ -224,9 +224,14 @@
     <Compile Include="Migrations\201404110911408_Report.Designer.cs">
       <DependentUpon>201404110911408_Report.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404170710362_GameServerStatus.cs" />
+    <Compile Include="Migrations\201404170710362_GameServerStatus.Designer.cs">
+      <DependentUpon>201404170710362_GameServerStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BannedId.cs" />
+    <Compile Include="Models\GameServerStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\PlayLog.cs" />
@@ -325,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404110911408_Report.resx">
       <DependentUpon>201404110911408_Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404170710362_GameServerStatus.resx">
+      <DependentUpon>201404170710362_GameServerStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
