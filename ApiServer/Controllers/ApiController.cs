@@ -264,23 +264,25 @@ namespace ApiServer.Controllers
         public ReportGameServerStatusOut ReportGameServerStatus(ReportGameServerStatusIn i)
         {
             Debug.WriteLine(i);
+            if (i.status == null)
+                throw new ApiException("status must not be null.");
             using (var db = new MyDbContext())
             {
-                var status = db.GameServerStatuses.FirstOrDefault(s => s.Name == i.name);
+                var status = db.GameServerStatuses.FirstOrDefault(s => s.Name == i.status.name);
                 if (status == null)
                 {
-                    status = new GameServerStatus();
+                    status = new ApiServer.Models.GameServerStatus();
                     db.GameServerStatuses.Add(status);
                 }
                 status.Updated = DateTime.UtcNow;
-                status.Host = i.host;
-                status.Port = i.port;
-                status.Name = i.name;
-                status.Players = i.players;
-                status.MaxPlayers = i.maxPlayers;
-                status.FramesPerInterval = i.framesPerInterval;
-                status.ReportIntervalSeconds = i.reportIntervalSeconds;
-                status.MaxElapsedSeconds = i.maxElapsedSeconds;
+                status.Host = i.status.host;
+                status.Port = i.status.port;
+                status.Name = i.status.name;
+                status.Players = i.status.players;
+                status.MaxPlayers = i.status.maxPlayers;
+                status.FramesPerInterval = i.status.framesPerInterval;
+                status.ReportIntervalSeconds = i.status.reportIntervalSeconds;
+                status.MaxElapsedSeconds = i.status.maxElapsedSeconds;
 
                 try
                 {
@@ -292,6 +294,26 @@ namespace ApiServer.Controllers
                 }
             }
             return new ReportGameServerStatusOut();
+        }
+
+        public GetGameServersOut GetGameServers(GetGameServersIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var ago = DateTime.UtcNow.AddSeconds(-20);
+                var servers = db.GameServerStatuses.Where(s=>s.Updated > ago).Select(s => new ApiScheme.Scheme.GameServerStatus()
+                {
+                    host = s.Host,
+                    port = s.Port,
+                    name = s.Name,
+                    players = s.Players,
+                    maxPlayers = s.MaxPlayers,
+                    framesPerInterval = s.FramesPerInterval,
+                    reportIntervalSeconds = s.ReportIntervalSeconds,
+                    maxElapsedSeconds = s.MaxElapsedSeconds
+                }).ToList();
+                return new GetGameServersOut() { servers = servers };
+            }
         }
 	}
 }
