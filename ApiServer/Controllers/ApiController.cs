@@ -27,7 +27,7 @@ namespace ApiServer.Controllers
         {
             // Worst case. Unknown error.
             var e = filterContext.Exception;
-            filterContext.Result = Json(new Out(){ exception = e.GetType().FullName, message = e.Message }, JsonRequestBehavior.AllowGet);
+            filterContext.Result = Json(new Out(){ exception = e.GetType().FullName, message = e.ToString() }, JsonRequestBehavior.AllowGet);
             filterContext.ExceptionHandled = true;
             base.OnException(filterContext);
         }
@@ -57,13 +57,13 @@ namespace ApiServer.Controllers
             {
                 // Bad case. Exception not handled gracefully.
                 if (e.InnerException != null)
-                    return Json(new Out() { exception = e.InnerException.GetType().FullName, message = e.InnerException.Message }, JsonRequestBehavior.AllowGet);
-                return Json(new Out() { exception = e.GetType().FullName, message = e.Message }, JsonRequestBehavior.AllowGet);
+                    return Json(new Out() { exception = e.InnerException.GetType().FullName, message = e.InnerException.ToString() }, JsonRequestBehavior.AllowGet);
+                return Json(new Out() { exception = e.GetType().FullName, message = e.ToString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 // Very bad case. Unknown error.
-                return Json(new Out() { exception = e.GetType().FullName, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new Out() { exception = e.GetType().FullName, message = e.ToString() }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -313,6 +313,20 @@ namespace ApiServer.Controllers
                     maxElapsedSeconds = s.MaxElapsedSeconds
                 }).ToList();
                 return new GetGameServersOut() { servers = servers };
+            }
+        }
+
+        public GetStatisticsOut GetStatistics(GetStatisticsIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                return new GetStatisticsOut()
+                {
+                    users = db.Users.Count(),
+                    characters = db.Characters.Count(),
+                    playings = db.GameServerStatuses.Sum(s => s.Players),
+                    playlogs = db.PlayLogs.Count()
+                };
             }
         }
 	}
