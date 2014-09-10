@@ -9,6 +9,14 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<p>
+    @using (Html.BeginForm("Ban", "BannedId"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.TextBox("characterName")
+        <button type="submit">BAN</button>
+    }
+</p>
 <table class="table">
     <tr>
         <th></th>

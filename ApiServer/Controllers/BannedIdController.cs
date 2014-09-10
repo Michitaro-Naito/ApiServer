@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ApiServer.Models;
+using System.Diagnostics;
 
 namespace ApiServer.Controllers
 {
@@ -18,6 +19,22 @@ namespace ApiServer.Controllers
         public ActionResult Index()
         {
             return View(db.BannedIds.ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Ban(string characterName)
+        {
+            Debug.WriteLine("Ban()" + characterName);
+            var characterToBan = db.Characters.FirstOrDefault(c => c.Name == characterName);
+            if (characterToBan == null)
+                throw new InvalidOperationException("Character to ban not found.");
+            var userToBan = characterToBan.User;
+            if (userToBan == null)
+                throw new InvalidOperationException("User to ban not found.");
+
+            Response.Write(string.Format("Character:{0} User:{1} banned.", characterToBan.Name, userToBan.UserId));
+            return null;
         }
 
         // GET: /BannedId/Details/5

@@ -329,5 +329,27 @@ namespace ApiServer.Controllers
                 };
             }
         }
+
+        /// <summary>
+        /// GameServer gets purchasable JWTs (representations of digital goods) for a specific Player.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public GetPurchasableGoodsOut GetPurchasableGoods(GetPurchasableGoodsIn i)
+        {
+            if (string.IsNullOrEmpty(i.userId))
+                throw new ApiException("userId must not be null nor empty.");
+
+            using (var db = new MyDbContext())
+            {
+                if (db.Users.FirstOrDefault(u => u.UserId == i.userId) == null)
+                    throw new ApiOutOfRangeException("User not found.");
+            }
+
+            return new GetPurchasableGoodsOut()
+            {
+                goods = Utility.GoodsHelper.GetGoods(i.userId)
+            };
+        }
 	}
 }
