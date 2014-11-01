@@ -199,6 +199,17 @@ namespace ApiServer.Controllers
             return new TransactionOut();
         }
 
+        public GetCharacterItemsOut GetCharacterItems(GetCharacterItemsIn i)
+        {
+            using (var db = new MyDbContext())
+            {
+                var character = db.Characters.FirstOrDefault(c => c.Name == i.characterName);
+                if (character == null)
+                    throw new ApiOutOfRangeException("Character not found.");
+                return new GetCharacterItemsOut() { items = character.Items };
+            }
+        }
+
         public AddPlayLogOut AddPlayLog(AddPlayLogIn i)
         {
             using (var db = new MyDbContext())

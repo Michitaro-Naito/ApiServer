@@ -33,6 +33,9 @@ namespace ApiServer.Controllers
             if (userToBan == null)
                 throw new InvalidOperationException("User to ban not found.");
 
+            db.BannedIds.Add(new BannedId() { UserId = userToBan.UserId });
+            db.SaveChanges();
+
             Response.Write(string.Format("Character:{0} User:{1} banned.", characterToBan.Name, userToBan.UserId));
             return null;
         }
