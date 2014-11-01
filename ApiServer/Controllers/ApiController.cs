@@ -138,7 +138,7 @@ namespace ApiServer.Controllers
                 var user = db.Users.FirstOrDefault(u => u.UserId == i.userId);
                 if (user == null)
                 {
-                    user = new User() { UserId = i.userId };
+                    user = new User() { UserId = i.userId, IpAddress = i.ipAddress, Host = i.host, Created = DateTime.UtcNow };
                     db.Users.Add(user);
                 }
                 if (user.Characters.Count >= 3)
